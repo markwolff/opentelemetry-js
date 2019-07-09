@@ -83,5 +83,14 @@ describe('TraceState', () => {
       const state = new TraceState('a=1=');
       assert.deepStrictEqual(state.get('a'), '1=');
     });
+
+    it('must truncate states which contain more than the maximum number of items', () => {
+      const state = new TraceState(
+        new Array(33).map((_ignore, num) => `a${num}=1`).join(',')
+      );
+      assert.deepStrictEqual(state.get('a0'), '1');
+      assert.deepStrictEqual(state.get('a31'), '1');
+      assert.deepStrictEqual(state.get('a32'), undefined);
+    });
   });
 });
