@@ -20,18 +20,19 @@ import { NoopTracer } from './NoopTracer';
 const noopTracer = new NoopTracer();
 let _globalTracer: types.Tracer | null = null;
 
+/* tslint:disable:no-any */
 export class GlobalTracerDelegate implements types.Tracer {
 
   getCurrentSpan(): types.Span {
     const tracer = _globalTracer || noopTracer;
-    // @ts-ignore -- allow `arguments` to be passed through here
-    return tracer.getCurrentSpan.apply(tracer, arguments);
+    // tslint:disable-next-line:no-any
+    return tracer.getCurrentSpan.apply(tracer, arguments as any);
   }
 
   startSpan(name: string, options?: types.SpanOptions | undefined): types.Span {
     const tracer = _globalTracer || noopTracer;
-    // @ts-ignore -- allow `arguments` to be passed through here
-    return tracer.startSpan.apply(tracer, arguments);
+    // tslint:disable-next-line:no-any
+    return tracer.startSpan.apply(tracer, arguments as any);
   }
 
   withSpan<T extends (...args: unknown[]) => unknown>(
@@ -39,30 +40,30 @@ export class GlobalTracerDelegate implements types.Tracer {
     fn: T
   ): ReturnType<T> {
     const tracer = _globalTracer || noopTracer;
-    // @ts-ignore -- allow `arguments` to be passed through here
-    return tracer.withSpan.apply(tracer, arguments);
+    // tslint:disable-next-line:no-any
+    return tracer.withSpan.apply(tracer, arguments as any) as ReturnType<T>;
   }
 
   recordSpanData(span: types.Span): void {
     const tracer = _globalTracer || noopTracer;
-    // @ts-ignore -- allow `arguments` to be passed through here
-    return tracer.recordSpanData.apply(tracer, arguments);
+    // tslint:disable-next-line:no-any
+    return tracer.recordSpanData.apply(tracer, arguments as any);
   }
 
   getBinaryFormat(): unknown {
     const tracer = _globalTracer || noopTracer;
-    // @ts-ignore -- allow `arguments` to be passed through here
-    return tracer.getBinaryFormat.apply(tracer, arguments);
+    // tslint:disable-next-line:no-any
+    return tracer.getBinaryFormat.apply(tracer, arguments as any);
   }
 
   getHttpTextFormat(): unknown {
     const tracer = _globalTracer || noopTracer;
-    // @ts-ignore -- allow `arguments` to be passed through here
-    return tracer.getHttpTextFormat.apply(tracer, arguments);
+    // tslint:disable-next-line:no-any
+    return tracer.getHttpTextFormat.apply(tracer, arguments as any);
   }
 }
 
-let globalTracerDelegate = new GlobalTracerDelegate();
+const globalTracerDelegate = new GlobalTracerDelegate();
 
 /**
  * Set the current global tracer

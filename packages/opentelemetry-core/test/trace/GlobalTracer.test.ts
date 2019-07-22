@@ -52,7 +52,7 @@ describe('GlobalTracer', () => {
       functions.forEach(fn => {
         const tracer = getTracer();
         try {
-          (tracer as unknown as { [fn: string]: Function})[fn](); // Try to run the function
+          ((tracer as unknown as { [fn: string]: Function}))[fn](); // Try to run the function
           assert.ok(true, fn);
         } catch (err) {
           if (err.message !== 'Method not implemented.') {
@@ -69,7 +69,10 @@ describe('GlobalTracer', () => {
     });
 
     class TestTracer extends NoopTracer {
-      startSpan(name: string, options?: types.SpanOptions | undefined): types.Span {
+      startSpan(
+        name: string,
+        options?: types.SpanOptions | undefined
+      ): types.Span {
         return dummySpan;
       }
     }
