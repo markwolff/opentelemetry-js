@@ -24,32 +24,41 @@ export class GlobalTracerDelegate implements types.Tracer {
 
   getCurrentSpan(): types.Span {
     const tracer = _globalTracer || noopTracer;
-    return tracer.getCurrentSpan.apply(tracer, <any>arguments);
+    // @ts-ignore -- allow `arguments` to be passed through here
+    return tracer.getCurrentSpan.apply(tracer, arguments);
   }
 
   startSpan(name: string, options?: types.SpanOptions | undefined): types.Span {
     const tracer = _globalTracer || noopTracer;
-    return tracer.startSpan.apply(tracer, <any>arguments);
+    // @ts-ignore -- allow `arguments` to be passed through here
+    return tracer.startSpan.apply(tracer, arguments);
   }
 
-  withSpan<T extends (...args: unknown[]) => unknown>(span: types.Span, fn: T): ReturnType<T> {
+  withSpan<T extends (...args: unknown[]) => unknown>(
+    span: types.Span,
+    fn: T
+  ): ReturnType<T> {
     const tracer = _globalTracer || noopTracer;
-    return tracer.withSpan.apply(tracer, <any>arguments) as ReturnType<T>;
+    // @ts-ignore -- allow `arguments` to be passed through here
+    return tracer.withSpan.apply(tracer, arguments);
   }
 
   recordSpanData(span: types.Span): void {
     const tracer = _globalTracer || noopTracer;
-    return tracer.recordSpanData.apply(tracer, <any>arguments);
+    // @ts-ignore -- allow `arguments` to be passed through here
+    return tracer.recordSpanData.apply(tracer, arguments);
   }
 
   getBinaryFormat(): unknown {
     const tracer = _globalTracer || noopTracer;
-    return tracer.getBinaryFormat.apply(tracer, <any>arguments);
+    // @ts-ignore -- allow `arguments` to be passed through here
+    return tracer.getBinaryFormat.apply(tracer, arguments);
   }
 
   getHttpTextFormat(): unknown {
     const tracer = _globalTracer || noopTracer;
-    return tracer.getHttpTextFormat.apply(tracer, <any>arguments);
+    // @ts-ignore -- allow `arguments` to be passed through here
+    return tracer.getHttpTextFormat.apply(tracer, arguments);
   }
 }
 
@@ -59,7 +68,7 @@ let globalTracerDelegate = new GlobalTracerDelegate();
  * Set the current global tracer
  */
 export function initGlobalTracer(tracer: types.Tracer): types.Tracer {
-  return globalTracerDelegate = tracer;
+  return _globalTracer = tracer;
 }
 
 /**

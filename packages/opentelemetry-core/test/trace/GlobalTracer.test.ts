@@ -27,13 +27,13 @@ describe('GlobalTracer', () => {
     'withSpan',
     'recordSpanData',
     'getBinaryFormat',
-    'getHttpTextFormat'
-  ]
+    'getHttpTextFormat',
+  ];
 
   it('should expose a tracer via getTracer', () => {
     const tracer = getTracer();
     assert.ok(tracer);
-    assert.equal(typeof tracer, 'object');
+    assert.strictEqual(typeof tracer, 'object');
   });
 
   describe('GlobalTracerDelegate', () => {
@@ -52,7 +52,7 @@ describe('GlobalTracer', () => {
       functions.forEach(fn => {
         const tracer = getTracer();
         try {
-          (<any>tracer)[fn](); // Try to run the function
+          (tracer as unknown as { [fn: string]: Function})[fn](); // Try to run the function
           assert.ok(true, fn);
         } catch (err) {
           if (err.message !== 'Method not implemented.') {
@@ -63,7 +63,7 @@ describe('GlobalTracer', () => {
     });
 
     it('should use the global tracer', () => {
-      const tracer = initGlobalTracer(new TestTracer())
+      const tracer = initGlobalTracer(new TestTracer());
       const span = tracer.startSpan('test');
       assert.deepStrictEqual(span, dummySpan);
     });
@@ -73,5 +73,5 @@ describe('GlobalTracer', () => {
         return dummySpan;
       }
     }
-  })
+  });
 });
