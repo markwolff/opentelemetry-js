@@ -22,7 +22,6 @@ let _globalTracer: types.Tracer | null = null;
 
 /* tslint:disable:no-any */
 export class GlobalTracerDelegate implements types.Tracer {
-
   getCurrentSpan(): types.Span {
     const tracer = _globalTracer || noopTracer;
     // tslint:disable-next-line:no-any
@@ -69,7 +68,7 @@ const globalTracerDelegate = new GlobalTracerDelegate();
  * Set the current global tracer
  */
 export function initGlobalTracer(tracer: types.Tracer): types.Tracer {
-  return _globalTracer = tracer;
+  return (_globalTracer = tracer);
 }
 
 /**
