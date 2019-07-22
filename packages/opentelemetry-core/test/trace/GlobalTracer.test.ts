@@ -52,7 +52,7 @@ describe('GlobalTracer', () => {
       functions.forEach(fn => {
         const tracer = getTracer();
         try {
-          ((tracer as unknown) as { [fn: string]: Function})[fn](); // Try to run the function
+          ((tracer as unknown) as { [fn: string]: Function })[fn](); // Try to run the function
           assert.ok(true, fn);
         } catch (err) {
           if (err.message !== 'Method not implemented.') {
