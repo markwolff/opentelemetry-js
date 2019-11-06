@@ -23,13 +23,6 @@ node_unit_tests: &node_unit_tests
         keys:
           - npm-cache-{{ checksum "/tmp/checksums.txt" }}
     - run:
-        name: Set test environment variables
-        command: |
-          export CIRCLE_NODE_VERSION=$(node --version | grep -oE \'v\\d+\')
-    - run:
-        name: test environment variables
-        command: echo $CIRCLE_NODE_VERSION
-    - run:
         name: Install Dependencies
         command: yarn install
     - save_cache:
@@ -47,7 +40,10 @@ node_unit_tests: &node_unit_tests
         command: yarn test
     - run:
         name: report coverage
-        command: if [ "$CIRCLE_NODE_VERSION" = "v12" ]; then yarn codecov; fi
+        command: |
+          export CIRCLE_NODE_VERSION=$(node --version | grep -oE \'v\\d+\')
+          echo $CIRCLE_NODE_VERSION
+          if [ "$CIRCLE_NODE_VERSION" = "v12" ]; then yarn codecov; fi
 
 browsers_unit_tests: &browsers_unit_tests
   steps:
@@ -63,7 +59,10 @@ browsers_unit_tests: &browsers_unit_tests
         command: yarn test:browser
     - run:
         name: report coverage
-        command: yarn codecov:browser
+        command: |
+          export CIRCLE_NODE_VERSION=$(node --version | grep -oE \'v\\d+\')
+          echo $CIRCLE_NODE_VERSION
+          if [ "$CIRCLE_NODE_VERSION" = "v12" ]; then yarn codecov:browser; fi
 
 jobs:
   lint:
