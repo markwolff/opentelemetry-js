@@ -22,10 +22,11 @@ node_unit_tests: &node_unit_tests
     - run:
         name: Setup environment variables
         command: |
+          export CIRCLE_NODE_VERSION=$(node --version | grep -oE \'v\\d+\')
           echo "export CIRCLE_NODE_VERSION=$(node --version | grep -oE \'v\\d+\')" >> $BASH_ENV
     - run:
         name: Log out node.js major version
-        command: echo $CIRCLE_NODE_VERSION
+        command: echo ${CIRCLE_NODE_VERSION}
     - restore_cache:
         keys:
           - npm-cache-{{ checksum "/tmp/checksums.txt" }}
@@ -47,7 +48,7 @@ node_unit_tests: &node_unit_tests
         command: yarn test
     - run:
         name: report coverage
-        command: if [ "$CIRCLE_NODE_VERSION" = "v12" ]; then yarn codecov; fi
+        command: if [ "${CIRCLE_NODE_VERSION}" = "v12" ]; then yarn codecov; fi
 
 browsers_unit_tests: &browsers_unit_tests
   steps:
