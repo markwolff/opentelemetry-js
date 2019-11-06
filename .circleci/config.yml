@@ -23,6 +23,13 @@ node_unit_tests: &node_unit_tests
         keys:
           - npm-cache-{{ checksum "/tmp/checksums.txt" }}
     - run:
+        name: Set test environment variables
+        command: |
+          export CIRCLE_NODE_VERSION=$(node --version | grep -oE \'v\\d+\')
+    - run:
+        name: test environment variables
+        command: echo $CIRCLE_NODE_VERSION
+    - run:
         name: Install Dependencies
         command: yarn install
     - save_cache:
@@ -32,10 +39,6 @@ node_unit_tests: &node_unit_tests
           - ./yarn.lock
           - ./packages/*/node_modules
           - ./packages/*/yarn.lock
-    - run:
-        name: Set test environment variables
-        command: |
-          export CIRCLE_NODE_VERSION=$(node --version | grep -oE \'v\\d+\')
     - run:
         name: Compile code
         command: yarn compile
