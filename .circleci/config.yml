@@ -21,12 +21,7 @@ node_unit_tests: &node_unit_tests
         command: sh .circleci/checksum.sh /tmp/checksums.txt
     - run:
         name: Setup environment variables
-        command: |
-          export CIRCLE_NODE_VERSION=$(node --version | grep -oE 'v[0-9]+')
-          echo $CIRCLE_NODE_VERSION
-          echo "export CIRCLE_NODE_VERSION=\$(node --version | grep -oE 'v[0-9]+')" >> $BASH_ENV
-          source $BASH_ENV
-          echo $CIRCLE_NODE_VERSION
+        command: export CIRCLE_NODE_VERSION=$(node --version | grep -oE 'v[0-9]+')
     - run:
         name: Log out node.js major version
         command: echo ${CIRCLE_NODE_VERSION}
@@ -57,6 +52,12 @@ browsers_unit_tests: &browsers_unit_tests
   steps:
     - checkout
     - run:
+        name: Setup environment variables
+        command: export CIRCLE_NODE_VERSION=$(node --version | grep -oE 'v[0-9]+')
+    - run:
+        name: Log out node.js major version
+        command: echo ${CIRCLE_NODE_VERSION}
+    - run:
         name: Install Dependencies
         command: yarn install
     - run:
@@ -67,10 +68,7 @@ browsers_unit_tests: &browsers_unit_tests
         command: yarn test:browser
     - run:
         name: report coverage
-        command: |
-          export CIRCLE_NODE_VERSION=$(node --version | grep -oE \'v\\d+\')
-          echo $CIRCLE_NODE_VERSION
-          if [ "$CIRCLE_NODE_VERSION" = "v12" ]; then yarn codecov:browser; fi
+        command: if [ "$CIRCLE_NODE_VERSION" = "v12" ]; then yarn codecov:browser; fi
 
 jobs:
   lint:
