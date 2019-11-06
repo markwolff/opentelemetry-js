@@ -17,12 +17,6 @@ node_unit_tests: &node_unit_tests
   steps:
     - checkout
     - run:
-        name: Create Checksum
-        command: sh .circleci/checksum.sh /tmp/checksums.txt
-    - run:
-        name: Setup environment variables
-        command: export CIRCLE_NODE_VERSION=$(node --version | grep -oE 'v[0-9]+')
-    - run:
         name: Log out node.js major version
         command: echo ${CIRCLE_NODE_VERSION}
     - restore_cache:
@@ -53,7 +47,9 @@ browsers_unit_tests: &browsers_unit_tests
     - checkout
     - run:
         name: Setup environment variables
-        command: export CIRCLE_NODE_VERSION=$(node --version | grep -oE 'v[0-9]+')
+        command: |
+          echo "export CIRCLE_NODE_VERSION=\$(node --version | grep -oE 'v[0-9]+')" >> $BASH_ENV
+          source $BASH_ENV
     - run:
         name: Log out node.js major version
         command: echo ${CIRCLE_NODE_VERSION}
