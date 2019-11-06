@@ -35,7 +35,7 @@ node_unit_tests: &node_unit_tests
     - run:
         name: Set test environment variables
         command: |
-          'export CIRCLE_NODE_VERSION=`node --version | grep -oE 'v\d+'`'
+          export CIRCLE_NODE_VERSION=$(node --version | grep -oE \'v\\d+\')
     - run:
         name: Compile code
         command: yarn compile
