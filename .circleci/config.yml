@@ -22,10 +22,10 @@ node_unit_tests: &node_unit_tests
     - run:
         name: Setup environment variables
         command: |
-          export CIRCLE_NODE_VERSION=$(node --version | grep -oE \'v\\d+\')
-          echo "export CIRCLE_NODE_VERSION=\$(node --version | grep -oE 'v\d+')" >> $BASH_ENV
+          export CIRCLE_NODE_VERSION=$(node --version | grep -oE 'v[0-9]+')
+          echo $CIRCLE_NODE_VERSION
+          echo "export CIRCLE_NODE_VERSION=\$(node --version | grep -oE 'v[0-9]+')" >> $BASH_ENV
           source $BASH_ENV
-          cat $BASH_ENV
           echo $CIRCLE_NODE_VERSION
     - run:
         name: Log out node.js major version
