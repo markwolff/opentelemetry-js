@@ -4,7 +4,8 @@
   "packages": [
     "benchmark/*",
     "packages/*",
-    "packages/opentelemetry-plugin-postgres/*"
+    "packages/opentelemetry-plugin-postgres/*",
+    "examples/redis"
   ],
   "version": "0.2.0",
   "changelog": {
